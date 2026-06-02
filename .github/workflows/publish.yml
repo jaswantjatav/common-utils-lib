@@ -1,0 +1,35 @@
+name: Build and Publish npm Package to JFrog
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-rate: 18
+          # Points npm directly to your private JFrog repo layout
+          registry-url: 'https://${{ secrets.JFROG_URL }}/npm-local-npm/'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile TypeScript to Production Modules
+        run: npm run build
+
+      - name: Configure JFrog Authentication Token
+        run: |
+          # Inject authentication securely into the runner's local environment config
+          echo "//${{ secrets.JFROG_URL }}/npm-local-npm/:_authToken=${{ secrets.JFROG_NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+
+      - name: Publish Package
+        run: npm publish
