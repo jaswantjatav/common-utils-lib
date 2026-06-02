@@ -16,6 +16,6 @@
     "typescript": "^5.0.0"
   },
   "publishConfig": {
-    "registry": "https://trialdmzd5x.jfrog.io/artifactory/api/npm/npm-virtual/"
+    "registry": "https://trialdmzd5x.jfrog.io/npm-virtual/"
   }
 }
