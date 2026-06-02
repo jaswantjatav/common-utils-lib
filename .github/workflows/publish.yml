@@ -17,7 +17,7 @@ jobs:
         with:
           node-rate: 18
           # Points npm directly to your private JFrog repo layout
-          registry-url: 'https://${{ secrets.JFROG_URL }}/npm-local-npm/'
+          registry-url: 'https://${{ secrets.JFROG_URL }}/artifactory/api/npm/npm-virtual/'
 
       - name: Install Dependencies
         run: npm install
@@ -28,7 +28,7 @@ jobs:
       - name: Configure JFrog Authentication Token
         run: |
           # Inject authentication securely into the runner's local environment config
-          echo "//${{ secrets.JFROG_URL }}/npm-local-npm/:_authToken=${{ secrets.JFROG_NPM_AUTH_TOKEN }}" >> ~/.npmrc
+          echo "//${{ secrets.JFROG_URL }}/artifactory/api/npm/npm-virtual/:_authToken=${{ secrets.JFROG_NPM_AUTH_TOKEN }}" >> ~/.npmrc
           echo "always-auth=true" >> ~/.npmrc
 
       - name: Publish Package
